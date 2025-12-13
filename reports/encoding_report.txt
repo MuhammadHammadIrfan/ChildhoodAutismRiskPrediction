@@ -1,0 +1,117 @@
+================================================================================
+ENCODING REPORT
+================================================================================
+
+
+1. BINARY ENCODING
+--------------------------------------------------------------------------------
+  ✓ gender: {'m': 1, 'f': 0}
+  ✓ jaundice: {'yes': 1, 'no': 0}
+  ✓ autism: {'yes': 1, 'no': 0}
+  ✓ used_app_before: {'yes': 1, 'no': 0}
+  ✓ class: {'YES': 1, 'NO': 0}
+
+
+2. TOP-5 COUNTRY ENCODING
+--------------------------------------------------------------------------------
+  Top 5 countries: ['United Kingdom', 'United States', 'India', 'Australia', 'Jordan']
+
+  Grouped distribution:
+    Other: 116
+    United Kingdom: 49
+    India: 42
+    United States: 42
+    Australia: 23
+    Jordan: 20
+
+  ✓ Created 6 country dummy variables
+  ✓ Columns: ['country_Australia', 'country_India', 'country_Jordan', 'country_Other', 'country_United Kingdom', 'country_United States']
+
+
+3. GROUPED ETHNICITY ENCODING
+--------------------------------------------------------------------------------
+
+  Original ethnicity distribution:
+    White-European: 108
+    Others: 57
+    Asian: 46
+    Middle Eastern: 27
+    South Asian: 21
+    Black: 14
+    Latino: 8
+    Hispanic: 7
+    Pasifika: 2
+    Turkish: 2
+
+  Keeping categories with count >= 10: ['White-European', 'Others', 'Asian', 'Middle Eastern', 'South Asian', 'Black']
+
+  Grouped ethnicity distribution:
+    White-European: 108
+    Others: 76
+    Asian: 46
+    Middle Eastern: 27
+    South Asian: 21
+    Black: 14
+
+  ✓ ethnicity: 6 grouped categories → 6 dummy variables
+  Columns: ['ethnicity_Asian', 'ethnicity_Black', 'ethnicity_Middle Eastern', 'ethnicity_Others', 'ethnicity_South Asian', 'ethnicity_White-European']
+
+
+4. ONE-HOT ENCODING
+--------------------------------------------------------------------------------
+  ✓ relation: 4 categories → 4 dummy variables
+    Columns: ['relation_Health care professional', 'relation_Parent', 'relation_Relative', 'relation_Self']
+
+
+5. DROPPING LEAKAGE AND CONSTANT COLUMNS
+--------------------------------------------------------------------------------
+  ✓ Dropped 'result' (DATA LEAKAGE: sum of A1-A10 scores)
+    Reason: Would give model perfect shortcut, preventing real learning
+  ✓ Dropped 'age_desc' (CONSTANT: only 1 unique value - no variance)
+
+  Total columns dropped: 2
+
+
+================================================================================
+ENCODING SUMMARY
+================================================================================
+  Final shape: (292, 32)
+  Original columns: 21
+  Final columns: 32
+
+  All columns:
+    1. A1_Score
+    2. A2_Score
+    3. A3_Score
+    4. A4_Score
+    5. A5_Score
+    6. A6_Score
+    7. A7_Score
+    8. A8_Score
+    9. A9_Score
+    10. A10_Score
+    11. age
+    12. gender
+    13. jaundice
+    14. autism
+    15. used_app_before
+    16. class
+    17. country_Australia
+    18. country_India
+    19. country_Jordan
+    20. country_Other
+    21. country_United Kingdom
+    22. country_United States
+    23. ethnicity_Asian
+    24. ethnicity_Black
+    25. ethnicity_Middle Eastern
+    26. ethnicity_Others
+    27. ethnicity_South Asian
+    28. ethnicity_White-European
+    29. relation_Health care professional
+    30. relation_Parent
+    31. relation_Relative
+    32. relation_Self
+
+  ⚠️ DATA LEAKAGE CHECK:
+  ✅ SUCCESS: 'result' column removed - no data leakage

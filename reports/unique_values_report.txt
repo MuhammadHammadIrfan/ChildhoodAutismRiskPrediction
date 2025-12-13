@@ -1,0 +1,281 @@
+================================================================================
+UNIQUE VALUES FOR ALL COLUMNS
+================================================================================
+
+A1_SCORE (2 unique values):
+--------------------------------------------------------------------------------
+  - 0
+  - 1
+
+A2_SCORE (2 unique values):
+--------------------------------------------------------------------------------
+  - 0
+  - 1
+
+A3_SCORE (2 unique values):
+--------------------------------------------------------------------------------
+  - 0
+  - 1
+
+A4_SCORE (2 unique values):
+--------------------------------------------------------------------------------
+  - 0
+  - 1
+
+A5_SCORE (2 unique values):
+--------------------------------------------------------------------------------
+  - 0
+  - 1
+
+A6_SCORE (2 unique values):
+--------------------------------------------------------------------------------
+  - 0
+  - 1
+
+A7_SCORE (2 unique values):
+--------------------------------------------------------------------------------
+  - 0
+  - 1
+
+A8_SCORE (2 unique values):
+--------------------------------------------------------------------------------
+  - 0
+  - 1
+
+A9_SCORE (2 unique values):
+--------------------------------------------------------------------------------
+  - 0
+  - 1
+
+A10_SCORE (2 unique values):
+--------------------------------------------------------------------------------
+  - 0
+  - 1
+
+AGE (8 unique values):
+--------------------------------------------------------------------------------
+  - 10.0
+  - 11.0
+  - 4.0
+  - 5.0
+  - 6.0
+  - 7.0
+  - 8.0
+  - 9.0
+
+GENDER (2 unique values):
+--------------------------------------------------------------------------------
+  - f
+  - m
+
+Value counts:
+  m: 208
+  f: 84
+
+ETHNICITY (10 unique values):
+--------------------------------------------------------------------------------
+  - Asian
+  - Black
+  - Hispanic
+  - Latino
+  - Middle Eastern
+  - Others
+  - Pasifika
+  - South Asian
+  - Turkish
+  - White-European
+
+Value counts:
+  White-European: 108
+  Others: 57
+  Asian: 46
+  Middle Eastern: 27
+  South Asian: 21
+  Black: 14
+  Latino: 8
+  Hispanic: 7
+  Pasifika: 2
+  Turkish: 2
+
+JAUNDICE (2 unique values):
+--------------------------------------------------------------------------------
+  - no
+  - yes
+
+Value counts:
+  no: 212
+  yes: 80
+
+AUTISM (2 unique values):
+--------------------------------------------------------------------------------
+  - no
+  - yes
+
+Value counts:
+  no: 243
+  yes: 49
+
+COUNTRY_OF_RES (52 unique values):
+--------------------------------------------------------------------------------
+  1. Afghanistan
+  2. Argentina
+  3. Armenia
+  4. Australia
+  5. Austria
+  6. Bahrain
+  7. Bangladesh
+  8. Bhutan
+  9. Brazil
+  10. Bulgaria
+  11. Canada
+  12. China
+  13. Costa Rica
+  14. Egypt
+  15. Europe
+  16. Georgia
+  17. Germany
+  18. Ghana
+  19. India
+  20. Iraq
+  21. Ireland
+  22. Isle of Man
+  23. Italy
+  24. Japan
+  25. Jordan
+  26. Kuwait
+  27. Latvia
+  28. Lebanon
+  29. Libya
+  30. Malaysia
+  31. Malta
+  32. Mexico
+  33. Nepal
+  34. Netherlands
+  35. New Zealand
+  36. Nigeria
+  37. Oman
+  38. Pakistan
+  39. Philippines
+  40. Qatar
+  41. Romania
+  42. Russia
+  43. Saudi Arabia
+  44. South Africa
+  45. South Korea
+  46. Sweden
+  47. Syria
+  48. Turkey
+  49. U.S. Outlying Islands
+  50. United Arab Emirates
+  51. United Kingdom
+  52. United States
+
+Value counts:
+  United Kingdom: 49
+  United States: 42
+  India: 42
+  Australia: 23
+  Jordan: 20
+  New Zealand: 13
+  Egypt: 9
+  United Arab Emirates: 7
+  Canada: 7
+  Bangladesh: 6
+  Saudi Arabia: 4
+  Philippines: 4
+  Pakistan: 4
+  Libya: 3
+  Qatar: 3
+  Armenia: 3
+  Russia: 3
+  Iraq: 3
+  Syria: 3
+  Bahrain: 2
+  Malaysia: 2
+  Italy: 2
+  Brazil: 2
+  Mexico: 2
+  Afghanistan: 2
+  Georgia: 2
+  Austria: 2
+  South Africa: 2
+  Lebanon: 2
+  Turkey: 2
+  Malta: 1
+  Bulgaria: 1
+  Kuwait: 1
+  Europe: 1
+  Oman: 1
+  Costa Rica: 1
+  Ireland: 1
+  Japan: 1
+  Sweden: 1
+  Argentina: 1
+  South Korea: 1
+  Netherlands: 1
+  Germany: 1
+  Romania: 1
+  China: 1
+  Latvia: 1
+  U.S. Outlying Islands: 1
+  Nigeria: 1
+  Nepal: 1
+  Isle of Man: 1
+  Ghana: 1
+  Bhutan: 1
+
+USED_APP_BEFORE (2 unique values):
+--------------------------------------------------------------------------------
+  - no
+  - yes
+
+Value counts:
+  no: 281
+  yes: 11
+
+RESULT (11 unique values):
+--------------------------------------------------------------------------------
+  - 0
+  - 1
+  - 10
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+
+AGE_DESC (1 unique values):
+--------------------------------------------------------------------------------
+  - 4-11 years
+
+Value counts:
+  4-11 years: 292
+
+RELATION (4 unique values):
+--------------------------------------------------------------------------------
+  - 'Health care professional'
+  - Parent
+  - Relative
+  - Self
+
+Value counts:
+  Parent: 257
+  Relative: 17
+  'Health care professional': 13
+  Self: 5
+
+CLASS (2 unique values):
+--------------------------------------------------------------------------------
+  - NO
+  - YES
+
+Value counts:
+  NO: 151
+  YES: 141
+
+================================================================================
+DATA CLEANING COMPLETE!
+================================================================================
