@@ -387,66 +387,10 @@ def main():
     st.write("Please complete the following behavioral assessment and demographic information:")
     
     # Create tabs for better organization
-    tab1, tab2, tab3 = st.tabs(["Behavioral Questions", "Demographics", "Results"])
+    tab1, tab2, tab3 = st.tabs(["Demographics", "Behavioral Questions", "Results"])
+
     
     with tab1:
-        st.subheader("Behavioral Assessment (AQ-10 Autism Quotient)")
-        st.info("**Instructions:** Answer each question based on the child's typical behavior. Please respond honestly for the most accurate assessment.")
-        st.write("**Note:** These are standardized AQ-10 screening questions. The scoring system automatically accounts for forward and reverse-scored items.")
-        
-        # AQ-10 Questions - Official Autism Quotient screening questions
-        # ═══════════════════════════════════════════════════════════════════
-        # IMPORTANT: Mixed scoring system (not all questions scored the same way)
-        # 
-        # Forward scored (YES = 1 = Risk): A1, A7, A10
-        #   - A1: Notices small sounds → YES indicates hyper-focus (autism trait)
-        #   - A7: Difficulty understanding emotions → YES indicates social difficulty
-        #   - A10: Hard to make friends → YES indicates social difficulty
-        # 
-        # Reverse scored (NO = 1 = Risk): A2, A3, A4, A5, A6, A8, A9
-        #   - A2-A6, A8-A9: Lack of typical social/cognitive abilities
-        #   - NO indicates absence of neurotypical development
-        # ═══════════════════════════════════════════════════════════════════
-        questions = {
-            'A1_Score': "Does the child often notice small sounds when others do not?",
-            'A2_Score': "Does the child usually concentrate more on the whole picture rather than the small details?",
-            'A3_Score': "In a social group, can the child easily keep track of several different people's conversations?",
-            'A4_Score': "Does the child find it easy to go back and forth between different activities?",
-            'A5_Score': "Does the child know how to keep a conversation going with his/her peers?",
-            'A6_Score': "Is the child good at social chit-chat?",
-            'A7_Score': "When read a story, does the child find it difficult to work out the character's intentions or feelings?",
-            'A8_Score': "When he/she was in preschool, did he/she use to enjoy playing games involving pretending with other children?",
-            'A9_Score': "Does the child find it easy to work out what someone is thinking or feeling just by looking at their face?",
-            'A10_Score': "Does the child find it hard to make new friends?"
-        }
-        
-        # Collect answers in columns for better layout
-        col1, col2 = st.columns(2)
-        answers = {}
-        
-        # Forward scored questions (YES = risk): A1, A7, A10
-        forward_scored = ['A1_Score', 'A7_Score', 'A10_Score']
-        # Reverse scored questions (NO = risk): A2, A3, A4, A5, A6, A8, A9
-        
-        for idx, (key, question) in enumerate(questions.items()):
-            with col1 if idx % 2 == 0 else col2:
-                answer = st.radio(
-                    f"**Q{idx+1}**: {question}",
-                    options=["Yes", "No"],
-                    index=0,  # Default to "Yes"
-                    key=key,
-                    horizontal=True
-                )
-                
-                # Apply correct scoring based on question type
-                if key in forward_scored:
-                    # Forward scored: YES = 1 (risk), NO = 0
-                    answers[key] = 1 if answer == "Yes" else 0
-                else:
-                    # Reverse scored: NO = 1 (risk), YES = 0
-                    answers[key] = 1 if answer == "No" else 0
-    
-    with tab2:
         st.subheader("Demographic Information")
         
         col1, col2 = st.columns(2)
@@ -502,6 +446,63 @@ def main():
                 options=["Parent", "Relative", "Health care professional", "Self"],
                 help="What is your relationship to the child?"
             )
+    
+    with tab2:
+        st.subheader("Behavioral Assessment (AQ-10 Autism Quotient)")
+        st.info("**Instructions:** Answer each question based on the child's typical behavior. Please respond honestly for the most accurate assessment.")
+        st.write("**Note:** These are standardized AQ-10 screening questions. The scoring system automatically accounts for forward and reverse-scored items.")
+        
+        # AQ-10 Questions - Official Autism Quotient screening questions
+        # ═══════════════════════════════════════════════════════════════════
+        # IMPORTANT: Mixed scoring system (not all questions scored the same way)
+        # 
+        # Forward scored (YES = 1 = Risk): A1, A7, A10
+        #   - A1: Notices small sounds → YES indicates hyper-focus (autism trait)
+        #   - A7: Difficulty understanding emotions → YES indicates social difficulty
+        #   - A10: Hard to make friends → YES indicates social difficulty
+        # 
+        # Reverse scored (NO = 1 = Risk): A2, A3, A4, A5, A6, A8, A9
+        #   - A2-A6, A8-A9: Lack of typical social/cognitive abilities
+        #   - NO indicates absence of neurotypical development
+        # ═══════════════════════════════════════════════════════════════════
+        questions = {
+            'A1_Score': "Does the child often notice small sounds when others do not?",
+            'A2_Score': "Does the child usually concentrate more on the whole picture rather than the small details?",
+            'A3_Score': "In a social group, can the child easily keep track of several different people's conversations?",
+            'A4_Score': "Does the child find it easy to go back and forth between different activities?",
+            'A5_Score': "Does the child know how to keep a conversation going with his/her peers?",
+            'A6_Score': "Is the child good at social chit-chat?",
+            'A7_Score': "When read a story, does the child find it difficult to work out the character's intentions or feelings?",
+            'A8_Score': "When he/she was in preschool, did he/she use to enjoy playing games involving pretending with other children?",
+            'A9_Score': "Does the child find it easy to work out what someone is thinking or feeling just by looking at their face?",
+            'A10_Score': "Does the child find it hard to make new friends?"
+        }
+        
+        # Collect answers in columns for better layout
+        col1, col2 = st.columns(2)
+        answers = {}
+        
+        # Forward scored questions (YES = risk): A1, A7, A10
+        forward_scored = ['A1_Score', 'A7_Score', 'A10_Score']
+        # Reverse scored questions (NO = risk): A2, A3, A4, A5, A6, A8, A9
+        
+        for idx, (key, question) in enumerate(questions.items()):
+            with col1 if idx % 2 == 0 else col2:
+                answer = st.radio(
+                    f"**Q{idx+1}**: {question}",
+                    options=["Yes", "No"],
+                    index=0,  # Default to "Yes"
+                    key=key,
+                    horizontal=True
+                )
+                
+                # Apply correct scoring based on question type
+                if key in forward_scored:
+                    # Forward scored: YES = 1 (risk), NO = 0
+                    answers[key] = 1 if answer == "Yes" else 0
+                else:
+                    # Reverse scored: NO = 1 (risk), YES = 0
+                    answers[key] = 1 if answer == "No" else 0
     
     with tab3:
         st.subheader("Risk Assessment Results")
