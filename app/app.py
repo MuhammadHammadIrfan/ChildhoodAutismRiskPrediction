@@ -454,8 +454,8 @@ def main():
         with col1:
             age = st.number_input(
                 "Child's Age (years)",
-                min_value=1,
-                max_value=18,
+                min_value=4,
+                max_value=11,
                 value=5,
                 help="Enter the child's age in years"
             )
