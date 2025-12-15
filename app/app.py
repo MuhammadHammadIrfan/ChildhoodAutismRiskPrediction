@@ -370,8 +370,8 @@ def main():
         
         st.header("Instructions")
         st.write("""
-        1. Answer all 10 behavioral questions
-        2. Provide demographic information
+        1. Provide demographic information
+        2. Answer all 10 behavioral questions
         3. Click "Predict Risk" to see results
         """)
         
