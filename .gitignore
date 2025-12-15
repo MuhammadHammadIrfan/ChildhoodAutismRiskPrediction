@@ -11,9 +11,6 @@ env/
 .vscode/
 .idea/
 
-# Dataset (Keep raw data local, do not upload large files)
-data/
-
 # OS generated files
 .DS_Store
 Thumbs.db
