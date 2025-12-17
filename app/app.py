@@ -519,7 +519,7 @@ def main():
                 features['gender'] = 1 if gender == "Male" else 0
                 features['jaundice'] = 1 if jaundice == "Yes" else 0
                 features['autism'] = 1 if autism_family == "Yes" else 0
-                features['used_app_before'] = 1 if used_app == "Yes" else 0
+                # Note: used_app_before removed from model
                 
                 # One-hot encode ethnicity
                 ethnicity_mapping = {
@@ -532,37 +532,15 @@ def main():
                 }
                 features.update(ethnicity_mapping)
                 
-                # One-hot encode country
-                country_mapping = {
-                    'country_Australia': 1 if country == "Australia" else 0,
-                    'country_India': 1 if country == "India" else 0,
-                    'country_Jordan': 1 if country == "Jordan" else 0,
-                    'country_Other': 1 if country == "Other" else 0,
-                    'country_United Kingdom': 1 if country == "United Kingdom" else 0,
-                    'country_United States': 1 if country == "United States" else 0
-                }
-                features.update(country_mapping)
-                
-                # One-hot encode relation
-                relation_mapping = {
-                    'relation_Health care professional': 1 if relation == "Health care professional" else 0,
-                    'relation_Parent': 1 if relation == "Parent" else 0,
-                    'relation_Relative': 1 if relation == "Relative" else 0,
-                    'relation_Self': 1 if relation == "Self" else 0
-                }
-                features.update(relation_mapping)
+                # Note: Country and relation columns removed from model training
                 
                 # Create DataFrame with proper column order (matching training data)
                 expected_columns = [
                     'A1_Score', 'A2_Score', 'A3_Score', 'A4_Score', 'A5_Score',
                     'A6_Score', 'A7_Score', 'A8_Score', 'A9_Score', 'A10_Score',
-                    'age', 'gender', 'jaundice', 'autism', 'used_app_before',
-                    'country_Australia', 'country_India', 'country_Jordan',
-                    'country_Other', 'country_United Kingdom', 'country_United States',
+                    'age', 'gender', 'jaundice', 'autism',
                     'ethnicity_Asian', 'ethnicity_Black', 'ethnicity_Middle Eastern',
-                    'ethnicity_Others', 'ethnicity_South Asian', 'ethnicity_White-European',
-                    'relation_Health care professional', 'relation_Parent',
-                    'relation_Relative', 'relation_Self'
+                    'ethnicity_Others', 'ethnicity_South Asian', 'ethnicity_White-European'
                 ]
                 
                 # Create input DataFrame
