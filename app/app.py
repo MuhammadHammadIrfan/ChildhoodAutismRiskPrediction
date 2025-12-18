@@ -371,8 +371,12 @@ def main():
         st.header("Instructions")
         st.write("""
         1. Provide demographic information
-        2. Answer all 10 behavioral questions
-        3. Click "Predict Risk" to see results
+        2. Click "Next" to proceed to questions
+        3. Answer all 10 behavioral questions
+        4. Click "Next" to view results
+        5. Generate risk assessment report
+        
+        **Tip:** Use Back/Next buttons to navigate between sections
         """)
         
         st.header("Privacy & Security")
@@ -382,15 +386,31 @@ def main():
         - Your information is confidential
         """)
     
+    # Initialize session state for navigation
+    if 'current_page' not in st.session_state:
+        st.session_state.current_page = 0
+    if 'answers' not in st.session_state:
+        st.session_state.answers = {}
+    if 'demographics' not in st.session_state:
+        st.session_state.demographics = {}
+    
     # Main content area
     st.header("Screening Assessment")
-    st.write("Please complete the following behavioral assessment and demographic information:")
     
-    # Create tabs for better organization
-    tab1, tab2, tab3 = st.tabs(["Demographics", "Behavioral Questions", "Results"])
-
+    # Progress indicator
+    pages = ["Demographics", "Behavioral Questions", "Results"]
+    progress_cols = st.columns(3)
+    for idx, page_name in enumerate(pages):
+        with progress_cols[idx]:
+            if idx == st.session_state.current_page:
+                st.markdown(f"**🔵 {idx+1}. {page_name}**")
+            else:
+                st.markdown(f"⚪ {idx+1}. {page_name}")
     
-    with tab1:
+    st.markdown("---")
+    
+    # Page 1: Demographics
+    if st.session_state.current_page == 0:
         st.subheader("Demographic Information")
         
         col1, col2 = st.columns(2)
@@ -446,8 +466,29 @@ def main():
                 options=["Parent", "Relative", "Health care professional", "Self"],
                 help="What is your relationship to the child?"
             )
+        
+        # Store demographics in session state
+        st.session_state.demographics = {
+            'age': age,
+            'gender': gender,
+            'ethnicity': ethnicity,
+            'jaundice': jaundice,
+            'autism_family': autism_family,
+            'country': country,
+            'used_app': used_app,
+            'relation': relation
+        }
+        
+        # Navigation buttons
+        st.markdown("---")
+        col_nav1, col_nav2, col_nav3 = st.columns([1, 1, 1])
+        with col_nav3:
+            if st.button("Next", type="primary", use_container_width=True):
+                st.session_state.current_page = 1
+                st.rerun()
     
-    with tab2:
+    # Page 2: Behavioral Questions
+    elif st.session_state.current_page == 1:
         st.subheader("Behavioral Assessment (AQ-10 Autism Quotient)")
         st.info("**Instructions:** Answer each question based on the child's typical behavior. Please respond honestly for the most accurate assessment.")
         st.write("**Note:** These are standardized AQ-10 screening questions. The scoring system automatically accounts for forward and reverse-scored items.")
@@ -503,32 +544,52 @@ def main():
                 else:
                     # Reverse scored: NO = 1 (risk), YES = 0
                     answers[key] = 1 if answer == "No" else 0
+        
+        # Store answers in session state
+        st.session_state.answers = answers
+        
+        # Navigation buttons
+        st.markdown("---")
+        col_nav1, col_nav2, col_nav3 = st.columns([1, 1, 1])
+        with col_nav1:
+            if st.button("Back", use_container_width=True):
+                st.session_state.current_page = 0
+                st.rerun()
+        with col_nav3:
+            if st.button("Next", type="primary", use_container_width=True):
+                st.session_state.current_page = 2
+                st.rerun()
     
-    with tab3:
+    # Page 3: Results
+    elif st.session_state.current_page == 2:
         st.subheader("Risk Assessment Results")
         
+        # Get data from session state
+        answers = st.session_state.answers
+        demographics = st.session_state.demographics
+        
         # Predict button
-        if st.button("Generate Risk Assessment", type="primary"):
+        if st.button("Generate Risk Assessment", type="primary", use_container_width=True):
             # Prepare input data
             try:
                 # Create feature dictionary
                 features = answers.copy()
                 
                 # Add demographic features
-                features['age'] = age
-                features['gender'] = 1 if gender == "Male" else 0
-                features['jaundice'] = 1 if jaundice == "Yes" else 0
-                features['autism'] = 1 if autism_family == "Yes" else 0
+                features['age'] = demographics['age']
+                features['gender'] = 1 if demographics['gender'] == "Male" else 0
+                features['jaundice'] = 1 if demographics['jaundice'] == "Yes" else 0
+                features['autism'] = 1 if demographics['autism_family'] == "Yes" else 0
                 # Note: used_app_before removed from model
                 
                 # One-hot encode ethnicity
                 ethnicity_mapping = {
-                    'ethnicity_Asian': 1 if ethnicity == "Asian" else 0,
-                    'ethnicity_Black': 1 if ethnicity == "Black" else 0,
-                    'ethnicity_Middle Eastern': 1 if ethnicity == "Middle Eastern" else 0,
-                    'ethnicity_Others': 1 if ethnicity == "Others" else 0,
-                    'ethnicity_South Asian': 1 if ethnicity == "South Asian" else 0,
-                    'ethnicity_White-European': 1 if ethnicity == "White-European" else 0
+                    'ethnicity_Asian': 1 if demographics['ethnicity'] == "Asian" else 0,
+                    'ethnicity_Black': 1 if demographics['ethnicity'] == "Black" else 0,
+                    'ethnicity_Middle Eastern': 1 if demographics['ethnicity'] == "Middle Eastern" else 0,
+                    'ethnicity_Others': 1 if demographics['ethnicity'] == "Others" else 0,
+                    'ethnicity_South Asian': 1 if demographics['ethnicity'] == "South Asian" else 0,
+                    'ethnicity_White-European': 1 if demographics['ethnicity'] == "White-European" else 0
                 }
                 features.update(ethnicity_mapping)
                 
@@ -623,13 +684,15 @@ def main():
                              delta_color="inverse" if aq_score >= 6 else "normal")
                 
                 with col2:
-                    st.metric("Child's Age", f"{age} years")
+                    st.metric("Child's Age", f"{demographics['age']} years")
                 
                 with col3:
-                    st.metric("Family History", autism_family)
+                    st.metric("Family History", demographics['autism_family'])
                 
                 # Detailed responses
                 with st.expander("View Detailed Response Analysis"):
+                    # Define forward scored questions (same as in questions section)
+                    forward_scored = ['A1_Score', 'A7_Score', 'A10_Score']
                     answer_list = list(answers.values())
                     question_keys = list(answers.keys())
                     response_df = pd.DataFrame({
@@ -650,14 +713,14 @@ def main():
                         prediction=prediction,
                         probability=prediction_proba,
                         answers=answers,
-                        age=age,
-                        gender=gender,
-                        ethnicity=ethnicity,
-                        jaundice=jaundice,
-                        autism_family=autism_family,
-                        country=country,
-                        used_app=used_app,
-                        relation=relation,
+                        age=demographics['age'],
+                        gender=demographics['gender'],
+                        ethnicity=demographics['ethnicity'],
+                        jaundice=demographics['jaundice'],
+                        autism_family=demographics['autism_family'],
+                        country=demographics['country'],
+                        used_app=demographics['used_app'],
+                        relation=demographics['relation'],
                         model_name=model_name,
                         accuracy=accuracy
                     )
@@ -681,7 +744,15 @@ def main():
                 st.info("Please ensure all fields are filled correctly.")
         
         else:
-            st.info("Please complete all sections in the previous tabs, then click 'Generate Risk Assessment' to view results.")
+            st.info("Complete the behavioral questions in the previous section, then click 'Generate Risk Assessment' to view results.")
+        
+        # Navigation buttons
+        st.markdown("---")
+        col_nav1, col_nav2, col_nav3 = st.columns([1, 1, 1])
+        with col_nav1:
+            if st.button("Back to Questions", use_container_width=True):
+                st.session_state.current_page = 1
+                st.rerun()
 
     # Footer
     st.markdown("---")
