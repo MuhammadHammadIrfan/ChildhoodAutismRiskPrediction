@@ -408,9 +408,14 @@ def main():
     progress_cols = st.columns(3)
     for idx, page_name in enumerate(pages):
         with progress_cols[idx]:
-            if idx == st.session_state.current_page:
-                st.markdown(f"**🔵 {idx+1}. {page_name}**")
+            if idx < st.session_state.current_page:
+                # Completed sections - blue circle
+                st.markdown(f"🔵 {idx+1}. {page_name}")
+            elif idx == st.session_state.current_page:
+                # Current section - bold but no color
+                st.markdown(f"**⚪ {idx+1}. {page_name}**")
             else:
+                # Remaining sections - white circle
                 st.markdown(f"⚪ {idx+1}. {page_name}")
     
     st.markdown("---")
