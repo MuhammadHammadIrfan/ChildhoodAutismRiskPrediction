@@ -19,9 +19,9 @@ jobs:
       - name: Push to hub
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-          # REPLACE WITH YOUR DETAILS BELOW
-          HF_USERNAME: "MuhammadHammadIrfan" 
-          SPACE_NAME: "autism-risk-prediction" 
+          HF_USERNAME: "MuhammadHammadIrfan"
+          # UPDATED: Matches your actual space URL exactly
+          SPACE_NAME: "childhood-autism-risk-prediction"
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
