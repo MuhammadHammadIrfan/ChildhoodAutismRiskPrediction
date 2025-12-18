@@ -104,6 +104,12 @@ st.markdown("""
     .element-container {
         margin-bottom: 1rem;
     }
+    
+    /* Force radio button circle to be blue when selected */
+    div[data-baseweb="radio"] input:checked ~ div:first-child {
+        background-color: #3b82f6 !important;
+        border-color: #3b82f6 !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
