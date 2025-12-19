@@ -142,7 +142,7 @@ def load_model():
 
 # PDF Generation Function
 def generate_pdf_report(prediction, probability, answers, age, gender, ethnicity, jaundice, 
-                       autism_family, country, used_app, relation, model_name, accuracy):
+                       autism_family, country, used_app, relation, model_name, accuracy, threshold):
     """Generate a comprehensive PDF report of the screening results"""
     
     buffer = BytesIO()
@@ -177,6 +177,7 @@ def generate_pdf_report(prediction, probability, answers, age, gender, ethnicity
     report_date = datetime.now().strftime("%B %d, %Y at %I:%M %p")
     elements.append(Paragraph(f"<b>Report Generated:</b> {report_date}", styles['Normal']))
     elements.append(Paragraph(f"<b>Model Used:</b> {model_name} (Accuracy: {accuracy:.1%})", styles['Normal']))
+    elements.append(Paragraph(f"<b>Decision Threshold:</b> {threshold*100:.0f}% (Custom calibrated threshold)", styles['Normal']))
     elements.append(Spacer(1, 0.3*inch))
     
     # Risk Assessment Result
@@ -390,6 +391,27 @@ def main():
         - No data is stored or shared
         - All processing happens in real-time
         - Your information is confidential
+        """)
+        
+        st.markdown("---")
+        
+        st.header("Model Calibration (Advanced)")
+        threshold = st.slider(
+            "Risk Decision Threshold",
+            min_value=0.0,
+            max_value=1.0,
+            value=0.5,
+            step=0.05,
+            help="Adjust the sensitivity of risk detection. Lower values = more sensitive (catches more cases but may increase false alarms). Higher values = more specific (fewer false alarms but may miss some cases)."
+        )
+        
+        st.info(f"""
+        **Current Logic:** Flag as high risk if probability > {threshold*100:.0f}%
+        
+        **Recommendations:**
+        - **Conservative (30-40%)**: Prioritize catching all potential cases
+        - **Balanced (50%)**: Standard medical screening threshold
+        - **Strict (60-70%)**: Minimize false positives
         """)
     
     # Initialize session state for navigation
@@ -633,13 +655,16 @@ def main():
                     input_scaled = input_df.values
                 
                 # Make prediction
-                prediction = model.predict(input_scaled)[0]
                 prediction_proba = model.predict_proba(input_scaled)[0]
+                risk_probability = prediction_proba[1]  # Probability of autism (class 1)
+                
+                # Use custom threshold instead of default 0.5
+                prediction = 1 if risk_probability > threshold else 0
                 
                 # Display results
                 risk_level = "HIGH RISK" if prediction == 1 else "LOW RISK"
                 risk_class = "high-risk" if prediction == 1 else "low-risk"
-                risk_probability = prediction_proba[1] * 100
+                risk_probability_percent = risk_probability * 100
                 
                 st.markdown(f"""
                     <div class="prediction-box {risk_class}">
@@ -647,16 +672,24 @@ def main():
                             SCREENING RESULT: {risk_level}
                         </h2>
                         <h3 style="text-align: center; font-weight: 500; font-size: 1.3rem; color: #4a5568;">
-                            Risk Probability: {risk_probability:.1f}%
+                            Risk Probability: {risk_probability_percent:.1f}%
                         </h3>
                         <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: #6b7280;">
-                            AQ-10 Score: {sum(answers.values())}/10
+                            AQ-10 Score: {sum(answers.values())}/10 | Decision Threshold: {threshold*100:.0f}%
                         </p>
                     </div>
                 """, unsafe_allow_html=True)
                 
                 # Detailed interpretation
                 st.subheader("Clinical Interpretation")
+                
+                # Show threshold impact
+                st.info(f"""
+                **Decision Analysis:** Based on risk probability of {risk_probability_percent:.1f}% and threshold of {threshold*100:.0f}%, 
+                the assessment is classified as **{risk_level}**.
+                
+                💡 **Adjust the threshold slider** in the sidebar to see how different sensitivity levels affect the classification.
+                """)
                 
                 if prediction == 1:
                     st.error("""
@@ -722,7 +755,7 @@ def main():
                 try:
                     pdf_buffer = generate_pdf_report(
                         prediction=prediction,
-                        probability=prediction_proba,
+                        probability=risk_probability,
                         answers=answers,
                         age=demographics['age'],
                         gender=demographics['gender'],
@@ -733,7 +766,8 @@ def main():
                         used_app=demographics['used_app'],
                         relation=demographics['relation'],
                         model_name=model_name,
-                        accuracy=accuracy
+                        accuracy=accuracy,
+                        threshold=threshold
                     )
                     
                     st.download_button(
