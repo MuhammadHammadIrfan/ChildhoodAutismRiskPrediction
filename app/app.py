@@ -183,7 +183,8 @@ def generate_pdf_report(prediction, probability, answers, age, gender, ethnicity
     # Risk Assessment Result
     risk_level = "HIGH RISK" if prediction == 1 else "LOW RISK"
     risk_color = colors.red if prediction == 1 else colors.green
-    risk_prob = probability[1] * 100
+    # Probability is already a scalar (not an array), so just multiply by 100
+    risk_prob = probability * 100
     
     elements.append(Paragraph("SCREENING RESULT", heading_style))
     
