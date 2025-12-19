@@ -552,31 +552,30 @@ def main():
             'A10_Score': "Does the child find it hard to make new friends?"
         }
         
-        # Collect answers in columns for better layout
-        col1, col2 = st.columns(2)
+        # Collect answers - display sequentially for mobile compatibility
         answers = {}
         
         # Forward scored questions (YES = risk): A1, A7, A10
         forward_scored = ['A1_Score', 'A7_Score', 'A10_Score']
         # Reverse scored questions (NO = risk): A2, A3, A4, A5, A6, A8, A9
         
+        # Display questions in sequential order (no columns to ensure mobile compatibility)
         for idx, (key, question) in enumerate(questions.items()):
-            with col1 if idx % 2 == 0 else col2:
-                answer = st.radio(
-                    f"**Q{idx+1}**: {question}",
-                    options=["Yes", "No"],
-                    index=0,  # Default to "Yes"
-                    key=key,
-                    horizontal=True
-                )
-                
-                # Apply correct scoring based on question type
-                if key in forward_scored:
-                    # Forward scored: YES = 1 (risk), NO = 0
-                    answers[key] = 1 if answer == "Yes" else 0
-                else:
-                    # Reverse scored: NO = 1 (risk), YES = 0
-                    answers[key] = 1 if answer == "No" else 0
+            answer = st.radio(
+                f"**Q{idx+1}**: {question}",
+                options=["Yes", "No"],
+                index=0,  # Default to "Yes"
+                key=key,
+                horizontal=True
+            )
+            
+            # Apply correct scoring based on question type
+            if key in forward_scored:
+                # Forward scored: YES = 1 (risk), NO = 0
+                answers[key] = 1 if answer == "Yes" else 0
+            else:
+                # Reverse scored: NO = 1 (risk), YES = 0
+                answers[key] = 1 if answer == "No" else 0
         
         # Store answers in session state
         st.session_state.answers = answers
